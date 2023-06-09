@@ -1,0 +1,21 @@
+﻿@model LogoutViewModel
+
+<div class="logout-page">
+    <div class="page-header">
+        <h4>Logout</h4>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <p>Deseja fazer logout no sistema?</p>
+            <form asp-action="Logout">
+                <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
+                <fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Sim</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

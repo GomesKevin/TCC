@@ -1,0 +1,16 @@
+﻿@using IdentityServer4.Extensions
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @{
+        if (@User.Identity.IsAuthenticated)
+        {
+            <h4>Bem vindo, @User.Claims.FirstOrDefault(c => c.Type == "given_name")?.Value</h4>
+        }
+    }
+</div>
