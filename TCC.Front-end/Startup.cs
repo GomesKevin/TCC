@@ -65,7 +65,7 @@ namespace TCC.Front_end
             {
                 options.EnableEndpointRouting = false;
 
-            });
+            }).AddRazorRuntimeCompilation();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

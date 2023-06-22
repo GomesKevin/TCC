@@ -25,7 +25,7 @@ namespace TCC.Front_end.Controllers
             return View("Index");
         }
 
-        public IActionResult Privacy()
+        public IActionResult Sobre()
         {
             return View();
         }
