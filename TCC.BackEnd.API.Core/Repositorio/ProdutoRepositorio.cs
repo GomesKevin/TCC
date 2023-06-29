@@ -20,9 +20,13 @@ namespace TCC.BackEnd.API.Core.Repositorio
 
                 var query = "SELECT CD_PRODUTO, DC_PRODUTO FROM TB_PRODUTO";
 
-                var teste = connection.Query<Produto>(query).ToList();
-                var teste2 = connection.Query<Produto>(query);
-                var teste3 = connection.Query(query);
+                var retorno = connection.Query(query);
+
+                list = retorno.Select(p => new Produto
+                {
+                   Codigo = p.CD_PRODUTO,
+                   Descricao = p.DC_PRODUTO,
+                }).ToList();
 
             }
 
