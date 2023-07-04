@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using TCC.Front_end.Models;
 
 namespace TCC.Front_end.Controllers
@@ -8,15 +10,23 @@ namespace TCC.Front_end.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            this.configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HttpResponseMessage response = await ApiGetAsync("api/produtos");
+
+            response.EnsureSuccessStatusCode();
+
+            var produtos = await response.Content.ReadFromJsonAsync<List<ProdutoViewModel>>();
+
+            return View(produtos);
         }
 
         [Authorize]
@@ -34,6 +44,21 @@ namespace TCC.Front_end.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task<HttpResponseMessage> ApiGetAsync(string rota)
+        {
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var client = new HttpClient();
+
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var url = this.configuration.GetValue<string>("tcc-api:cadastros");
+
+            var response = await client.GetAsync(url + "/" + rota);
+
+            return response;
         }
     }
 }

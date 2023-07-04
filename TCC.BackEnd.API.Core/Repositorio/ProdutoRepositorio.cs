@@ -18,7 +18,7 @@ namespace TCC.BackEnd.API.Core.Repositorio
             {
                 connection.Open();
 
-                var query = "SELECT CD_PRODUTO, DC_PRODUTO FROM TB_PRODUTO";
+                var query = "SELECT CD_PRODUTO, DC_PRODUTO, DC_CAMINHO_IMAGEM FROM TB_PRODUTO";
 
                 var retorno = connection.Query(query);
 
@@ -26,6 +26,7 @@ namespace TCC.BackEnd.API.Core.Repositorio
                 {
                    Codigo = p.CD_PRODUTO,
                    Descricao = p.DC_PRODUTO,
+                   CaminhoImagem = p.DC_CAMINHO_IMAGEM
                 }).ToList();
 
             }

@@ -1,7 +1,6 @@
-﻿
-namespace TCC.BackEnd.API.Core.Models
+﻿namespace TCC.Front_end.Models
 {
-    public class Produto
+    public class ProdutoViewModel
     {
         public int Codigo { get; set; }
         public string Descricao { get; set; }
