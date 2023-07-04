@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -33,6 +35,15 @@ namespace TCC.Front_end.Controllers
         public IActionResult Login()
         {
             return View("Index");
+        }
+
+        [Authorize]
+        public async Task<RedirectToActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Sobre()
