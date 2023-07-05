@@ -61,6 +61,13 @@ namespace TCC.Front_end
 
             });
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                // Configurações da sessão, se necessário
+            });
+
             services.AddControllersWithViews(options =>
             {
                 options.EnableEndpointRouting = false;
@@ -84,6 +91,7 @@ namespace TCC.Front_end
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

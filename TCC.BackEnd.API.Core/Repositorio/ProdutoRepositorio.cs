@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace TCC.BackEnd.API.Core.Repositorio
             {
                 connection.Open();
 
-                var query = "SELECT CD_PRODUTO, DC_PRODUTO, DC_CAMINHO_IMAGEM FROM TB_PRODUTO";
+                var query = "SELECT CD_PRODUTO, DC_PRODUTO, DC_CAMINHO_IMAGEM, MO_VALOR FROM TB_PRODUTO";
 
                 var retorno = connection.Query(query);
 
@@ -26,7 +27,8 @@ namespace TCC.BackEnd.API.Core.Repositorio
                 {
                    Codigo = p.CD_PRODUTO,
                    Descricao = p.DC_PRODUTO,
-                   CaminhoImagem = p.DC_CAMINHO_IMAGEM
+                   CaminhoImagem = p.DC_CAMINHO_IMAGEM,
+                   Valor = p.MO_VALOR
                 }).ToList();
 
             }

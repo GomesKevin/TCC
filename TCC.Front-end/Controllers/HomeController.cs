@@ -71,5 +71,29 @@ namespace TCC.Front_end.Controllers
 
             return response;
         }
+
+        [HttpPost]
+        public IActionResult AdicionarItem([FromBody]ProdutoViewModel model)
+        {
+            // Obter o carrinho de compras da sessão
+            var carrinho = HttpContext.Session.GetObject<List<ProdutoViewModel>>("carrinho");
+            if (carrinho == null)
+            {
+                // Se não houver um carrinho na sessão, criar um novo
+                carrinho = new List<ProdutoViewModel>();
+            }
+
+            if(carrinho.FirstOrDefault(c => c.Codigo == model.Codigo) != null)
+                carrinho.Find(c => c.Codigo == model.Codigo).Quantidade += 1;
+            else
+            // Adicionar o novo item ao carrinho
+            carrinho.Add(model);
+
+            // Salvar o carrinho de compras de volta na sessão
+            HttpContext.Session.SetObject("carrinho", carrinho);
+
+            // Retornar um resultado JSON indicando o sucesso da operação
+            return Json(new { success = true });
+        }
     }
 }
