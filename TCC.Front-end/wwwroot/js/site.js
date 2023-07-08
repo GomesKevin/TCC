@@ -12,9 +12,12 @@
     }, 3000); // Tempo em milissegundos (3 segundos neste exemplo)
 }
 
-function adicionarItem(codigoProduto) {
+function adicionarItem(codigo, descricao, valor, caminhoImagem) {
     var model = {
-        Codigo: codigoProduto,
+        CodigoProduto: codigo,
+        DescricaoProduto: descricao,
+        ValorProduto: valor,
+        CaminhoImagemProduto: caminhoImagem,
         Quantidade: 1
     };
 

@@ -31,7 +31,7 @@
                                     <input type="hidden" name="Descricao" value="@produto.Descricao" />
                                     <input type="hidden" name="Valor" value="@produto.Valor" />
                                     <div class="text-center">
-                                        <button type="button" class="btn btn-outline-dark mt-auto" onclick="adicionarItem(@produto.Codigo)">Adicionar</button>
+                                        <button type="button" class="btn btn-outline-dark mt-auto" onclick="adicionarItem('@produto.Codigo', '@produto.Descricao', parseFloat('@produto.Valor'.replace(',', '.')), '@produto.CaminhoImagem')">Adicionar</button>
                                     </div>
                                 </div>
                             </div>

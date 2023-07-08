@@ -44,10 +44,19 @@
                 </ul>
 
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
+                    <button class="btn btn-outline-dark" type="submit" asp-controller="Carrinho" asp-action="Index">
                         @* <i class="bi-cart-fill me-1"></i>*@
                         Carrinho
-                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="qtdItensCarrinho">0</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="qtdItensCarrinho">
+                            @if (ViewBag.QuantidadeItensCarrinho != null && ViewBag.QuantidadeItensCarrinho > 0)
+                            {
+                                @ViewBag.QuantidadeItensCarrinho
+                            }
+                            else
+                            {
+                                <text>0</text>
+                            }
+                        </span>
                     </button>
                 </form>
             </div>

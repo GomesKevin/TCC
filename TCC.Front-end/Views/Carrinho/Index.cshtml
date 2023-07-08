@@ -1,0 +1,44 @@
+﻿@model List<CarrinhoViewModel>
+@{
+    ViewData["Title"] = "Carrinho";
+}
+
+@{
+    if (Model == null)
+    {
+        <h2>Seu carrinho está vazio.</h2>
+        <p>Para continuar comprando, navegue pelas categorias do site ou faça uma busca pelo seu produto.</p>
+    }
+    else
+    {
+        <div clas="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Unidade</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.DescricaoProduto</td>
+                            <td>@item.Quantidade</td>
+                            <td>@item.ValorProduto.ToString("C2")</td>
+                            <td>@item.ValorTotalProduto.ToString("C2")</td>
+                            <td>Excluir</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Total do pedido: @ViewBag.TotalPedido.ToString("C2")</h3>
+    }
+}
+
+
