@@ -73,6 +73,8 @@ namespace TCC.Front_end
                 options.EnableEndpointRouting = false;
 
             }).AddRazorRuntimeCompilation();
+
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

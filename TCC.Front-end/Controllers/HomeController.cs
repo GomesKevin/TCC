@@ -28,6 +28,14 @@ namespace TCC.Front_end.Controllers
 
             var produtos = await response.Content.ReadFromJsonAsync<List<ProdutoViewModel>>();
 
+            var carrinho = HttpContext.Session.GetObject<List<CarrinhoViewModel>>("carrinho");
+
+            if (carrinho != null)
+            {
+                ViewBag.QuantidadeItensCarrinho = carrinho.Sum(c => c.Quantidade);
+
+            }
+
             return View(produtos);
         }
 
@@ -73,7 +81,7 @@ namespace TCC.Front_end.Controllers
         }
 
         [HttpPost]
-        public IActionResult AdicionarItem([FromBody]CarrinhoViewModel model)
+        public IActionResult AdicionarItem([FromBody] CarrinhoViewModel model)
         {
             // Obter o carrinho de compras da sessão
             var carrinho = HttpContext.Session.GetObject<List<CarrinhoViewModel>>("carrinho");
@@ -83,11 +91,11 @@ namespace TCC.Front_end.Controllers
                 carrinho = new List<CarrinhoViewModel>();
             }
 
-            if(carrinho.FirstOrDefault(c => c.CodigoProduto == model.CodigoProduto) != null)
+            if (carrinho.FirstOrDefault(c => c.CodigoProduto == model.CodigoProduto) != null)
                 carrinho.Find(c => c.CodigoProduto == model.CodigoProduto).Quantidade += 1;
             else
-            // Adicionar o novo item ao carrinho
-            carrinho.Add(model);
+                // Adicionar o novo item ao carrinho
+                carrinho.Add(model);
 
             // Salvar o carrinho de compras de volta na sessão
             HttpContext.Session.SetObject("carrinho", carrinho);

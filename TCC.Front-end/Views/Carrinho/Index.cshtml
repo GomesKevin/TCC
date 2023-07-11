@@ -4,6 +4,7 @@
 }
 
 @{
+
     if (Model == null)
     {
         <h2>Seu carrinho está vazio.</h2>
@@ -11,33 +12,40 @@
     }
     else
     {
-        <div clas="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Produto</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Unidade</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.DescricaoProduto</td>
-                            <td>@item.Quantidade</td>
-                            <td>@item.ValorProduto.ToString("C2")</td>
-                            <td>@item.ValorTotalProduto.ToString("C2")</td>
-                            <td>Excluir</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+        <form method="post" action="/Carrinho/FinalizarPedido">
 
-        <h3>Total do pedido: @ViewBag.TotalPedido.ToString("C2")</h3>
+            <div class="col-10">
+                <div class="padding-top-50">
+                    <table class="table table-responsive table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="padding-10">Produto</th>
+                                <th scope="col" class="padding-10">Quantidade</th>
+                                <th scope="col" class="padding-10">Unidade</th>
+                                <th scope="col" class="padding-10">Total</th>
+                                <th scope="col" class="padding-10">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.DescricaoProduto</td>
+                                    <td>@item.Quantidade</td>
+                                    <td>@item.ValorProduto.ToString("C2")</td>
+                                    <td>@item.ValorTotalProduto.ToString("C2")</td>
+                                    <td>Excluir</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <h3>Total do pedido: @ViewBag.TotalPedido.ToString("C2")</h3>
+
+                    <button class="btn btn-outline-dark" type="submit">Finalizar compra</button>
+                </div>
+            </div>
+
+        </form>
     }
 }
 
