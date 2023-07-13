@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.AccessTokenValidation;
 
-namespace TCC.BackEnd.API.Cadastros
+namespace TCC.BackEnd.API.Negocio
 {
     public class Startup : IStartup
     {
@@ -44,7 +44,6 @@ namespace TCC.BackEnd.API.Cadastros
             services.AddHttpContextAccessor();
 
         }
-
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)
         {

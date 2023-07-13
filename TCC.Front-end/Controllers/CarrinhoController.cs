@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using TCC.Front_end.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TCC.Front_end.Controllers
 {
@@ -38,19 +41,23 @@ namespace TCC.Front_end.Controllers
             return View(carrinho);
         }
 
+        [Authorize]
         public IActionResult FinalizarPedido()
         {
             var carrinho = HttpContext.Session.GetObject<List<CarrinhoViewModel>>("carrinho");
 
             if (carrinho != null)
             {
-                var accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var accessToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var accessToken2 = HttpContext.GetTokenAsync("access_token");
 
                 try
                 {
+                    var subjectIdClaim = User.Claims.FirstOrDefault(c => c.Type == "sub");
 
                     var pedido = new PedidoViewModel
                     {
+                        CodigoPessoa = Convert.ToInt32(subjectIdClaim.Value),
                         ValorTotal = carrinho.Sum(c => c.ValorTotalProduto),
                         Itens = new List<PedidoItemViewModel>()
                     };
@@ -68,15 +75,13 @@ namespace TCC.Front_end.Controllers
 
                     var client = new HttpClient();
 
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken2.Result);
 
                     var url = this._configuration.GetValue<string>("tcc-api:negocio");
 
-                    var dados = JsonConvert.SerializeObject(carrinho);
+                    var content = client.PostAsJsonAsync(new Uri(url + "/api/Pedidos"), pedido).Result;
 
-                    var content = client.PostAsJsonAsync(new Uri(url + "/api/Pedidos"), dados);
-
-                    var teste = content;
+                    var codigoPedido = content.Content.ReadAsStringAsync().Result;
                 }
                 catch (Exception ex)
                 {

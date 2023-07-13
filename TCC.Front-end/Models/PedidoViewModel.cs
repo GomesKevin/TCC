@@ -5,5 +5,7 @@
         public int Codigo { get; set; }
         public decimal ValorTotal { get; set; }
         public List<PedidoItemViewModel> Itens { get; set; }
+        public int CodigoPessoa { get; set; }
+
     }
 }
