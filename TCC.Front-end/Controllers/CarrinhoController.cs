@@ -48,8 +48,7 @@ namespace TCC.Front_end.Controllers
 
             if (carrinho != null)
             {
-                var accessToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var accessToken2 = HttpContext.GetTokenAsync("access_token");
+                var accessToken = HttpContext.GetTokenAsync("access_token");
 
                 try
                 {
@@ -75,7 +74,7 @@ namespace TCC.Front_end.Controllers
 
                     var client = new HttpClient();
 
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken2.Result);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken.Result);
 
                     var url = this._configuration.GetValue<string>("tcc-api:negocio");
 

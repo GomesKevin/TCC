@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace TCC.BackEnd.API.Core.Models
 {
-    public class Pedido
+    public class Pessoa
     {
         public int Codigo { get; set; }
-        public decimal ValorTotal { get; set; }
-        public List<PedidoItem> Itens { get; set; }
-        public int CodigoPessoa { get; set; }
-
+        public string Nome { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -19,12 +19,13 @@ namespace TCC.BackEnd.API.Core.Repositorio
             {
                 connection.Open();
 
-                var query = "INSERT INTO TB_PEDIDO (MO_VALOR_TOTAL) ";
-                query += "VALUES (@MO_VALOR_TOTAL); ";
+                var query = "INSERT INTO TB_PEDIDO (MO_VALOR_TOTAL, CD_PESSOA) ";
+                query += "VALUES (@MO_VALOR_TOTAL, @CD_PESSOA); ";
                 query += "SELECT CAST(SCOPE_IDENTITY() AS INT)";
 
                 var parametros = new DynamicParameters();
                 parametros.Add("@MO_VALOR_TOTAL", pedido.ValorTotal);
+                parametros.Add("@CD_PESSOA", pedido.CodigoPessoa);
 
                 codigoPedido = connection.ExecuteScalar<int>(query, parametros);
 
