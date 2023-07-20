@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.AccessTokenValidation;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TCC.BackEnd.API.Comunicacao
 {
@@ -42,7 +43,7 @@ namespace TCC.BackEnd.API.Comunicacao
             });
 
             services.AddHttpContextAccessor();
-
+            services.AddMemoryCache();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment environment)

@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.AccessTokenValidation;
+using TCC.BackEnd.API.Core;
 
 namespace TCC.BackEnd.API.Cadastros
 {
@@ -42,7 +43,7 @@ namespace TCC.BackEnd.API.Cadastros
             });
 
             services.AddHttpContextAccessor();
-
+            services.AddScoped<ICacheService, CacheService>();
         }
 
 

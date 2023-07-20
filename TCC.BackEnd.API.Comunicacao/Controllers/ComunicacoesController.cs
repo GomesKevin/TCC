@@ -42,12 +42,15 @@ namespace TCC.BackEnd.API.Comunicacao.Controllers
 
             var url = this._configuration.GetValue<string>("tcc-api:cadastros");
 
-            var response = await client.GetAsync(url + "/api/pessoas/" + pedido.CodigoPessoa);
+            var responsePessoa = await client.GetAsync(url + "/api/pessoas/" + pedido.CodigoPessoa);
+            var jsonPessoa = await responsePessoa.Content.ReadAsStringAsync();
+            var pessoa = JsonConvert.DeserializeObject<Pessoa>(jsonPessoa);
 
-            var json = await response.Content.ReadAsStringAsync();
-            var pessoa = JsonConvert.DeserializeObject<Pessoa>(json);
+            var responseTokenIntegracao = await client.GetAsync(url + "/api/integracoes/SendGrid");
+            var jsonTokenIntegracao = await responseTokenIntegracao.Content.ReadAsStringAsync();
+            var tokenIntegracao = JsonConvert.DeserializeObject<TokenIntegracao>(jsonTokenIntegracao);
 
-            var clientSendGrid = new SendGridClient("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");
+            var clientSendGrid = new SendGridClient(tokenIntegracao.Token);
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("1410625@sga.pucminas.br", "EasyMarket"),
