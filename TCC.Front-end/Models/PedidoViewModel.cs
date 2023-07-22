@@ -6,6 +6,6 @@
         public decimal ValorTotal { get; set; }
         public List<PedidoItemViewModel> Itens { get; set; }
         public int CodigoPessoa { get; set; }
-
+        public DateTime DataCriacao { get; set; }
     }
 }

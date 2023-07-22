@@ -22,7 +22,7 @@ namespace TCC.Front_end.Controllers
 
         public async Task<IActionResult> Index()
         {
-            HttpResponseMessage response = await ApiGetAsync("api/produtos");
+            HttpResponseMessage response = await ApiGetAsync("api/produtos", "cadastros");
 
             response.EnsureSuccessStatusCode();
 
@@ -42,7 +42,7 @@ namespace TCC.Front_end.Controllers
         [Authorize]
         public IActionResult Login()
         {
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -65,15 +65,16 @@ namespace TCC.Front_end.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private async Task<HttpResponseMessage> ApiGetAsync(string rota)
+        private async Task<HttpResponseMessage> ApiGetAsync(string rota, string api)
         {
-            //var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = HttpContext.GetTokenAsync("access_token").Result;
 
             var client = new HttpClient();
 
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
-            var url = this.configuration.GetValue<string>("tcc-api:cadastros");
+
+            var url = this.configuration.GetValue<string>("tcc-api:" + api);
 
             var response = await client.GetAsync(url + "/" + rota);
 
@@ -103,6 +104,23 @@ namespace TCC.Front_end.Controllers
 
             // Retornar um resultado JSON indicando o sucesso da operação
             return Json(new { success = true });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Pedidos()
+       
+        {
+            var codigoUsuario = User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
+
+            HttpResponseMessage response = await ApiGetAsync("api/pedidos/" + codigoUsuario, "negocio");
+
+            response.EnsureSuccessStatusCode();
+
+            var pedidos = await response.Content.ReadFromJsonAsync<List<PedidoViewModel>>();
+
+            pedidos = pedidos.OrderByDescending(p => p.Codigo).ToList();
+
+            return View(pedidos);
         }
     }
 }

@@ -8,5 +8,6 @@
         public int QuantidadeItem { get; set; }
         public decimal ValorUnitarioItem { get; set; }
         public decimal ValorTotalItem { get; set; }
+        public string NomeItem { get; set; } = "";
     }
 }

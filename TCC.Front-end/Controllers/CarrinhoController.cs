@@ -45,6 +45,7 @@ namespace TCC.Front_end.Controllers
         public IActionResult FinalizarPedido()
         {
             var carrinho = HttpContext.Session.GetObject<List<CarrinhoViewModel>>("carrinho");
+            int codigoPedido = 0;
 
             if (carrinho != null)
             {
@@ -80,15 +81,26 @@ namespace TCC.Front_end.Controllers
 
                     var content = client.PostAsJsonAsync(new Uri(url + "/api/Pedidos"), pedido).Result;
 
-                    var codigoPedido = content.Content.ReadAsStringAsync().Result;
+                    content.EnsureSuccessStatusCode();
+
+                    codigoPedido = Convert.ToInt32(content.Content.ReadAsStringAsync().Result);
                 }
                 catch (Exception ex)
                 {
                     var str = ex.GetBaseException().Message;
                 }
             }
-
-            return Json(new { success = true });
+            TempData["CodigoPedido"] = codigoPedido;
+            return RedirectToAction("PedidoFinalizado");
         }
+
+        public IActionResult PedidoFinalizado()
+        {
+            int codigoPedido = (int)TempData["CodigoPedido"];
+            TempData.Clear();
+
+            return View(codigoPedido);
+        }
+
     }
 }

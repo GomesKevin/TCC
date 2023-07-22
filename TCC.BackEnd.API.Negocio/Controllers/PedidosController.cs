@@ -51,5 +51,15 @@ namespace TCC.BackEnd.API.Negocio.Controllers
                 throw new Exception("Ocorreu um erro ao salvar o pedido.");
             }
         }
+
+
+        [Authorize]
+        [HttpGet("{codigoPessoa}")]
+        public ActionResult<IEnumerable<Pedido>> GetPedidos(int codigoPessoa)
+        {
+            var repo = new PedidoRepositorio();
+
+            return repo.GetPedidos(codigoPessoa);
+        }
     }
 }

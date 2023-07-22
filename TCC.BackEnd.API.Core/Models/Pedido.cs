@@ -12,6 +12,7 @@ namespace TCC.BackEnd.API.Core.Models
         public decimal ValorTotal { get; set; }
         public List<PedidoItem> Itens { get; set; }
         public int CodigoPessoa { get; set; }
+        public DateTime DataCriacao { get; set; }
 
     }
 }
