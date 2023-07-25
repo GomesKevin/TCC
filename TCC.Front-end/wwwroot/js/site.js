@@ -42,3 +42,33 @@ function adicionarItem(codigo, descricao, valor, caminhoImagem) {
         }
     });
 }
+
+
+function removerItem(codigoItem) {
+    var model = {
+        CodigoProduto: codigoItem,
+    };
+
+    $.ajax({
+        url: '/Home/RemoverItem',
+        type: 'POST',
+        data: JSON.stringify(model),
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success) {
+
+                var linhaRemover = $('.btn-remover[data-codigo="' + codigoItem + '"]').closest('tr');
+                linhaRemover.remove();
+
+                window.location.href = '/Carrinho/Index';
+
+                exibirMensagem('Produto removido com sucesso!', true);
+            } else {
+                exibirMensagem('Ocorreu um erro ao remover o produto do carrinho.', false);
+            }
+        },
+        error: function () {
+            exibirMensagem('Ocorreu um erro ao remover o produto do carrinho.', false);
+        }
+    });
+}

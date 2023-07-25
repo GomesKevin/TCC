@@ -91,6 +91,10 @@ namespace TCC.Front_end.Controllers
                 }
             }
             TempData["CodigoPedido"] = codigoPedido;
+
+            carrinho = null;
+            HttpContext.Session.SetObject("carrinho", carrinho);
+
             return RedirectToAction("PedidoFinalizado");
         }
 

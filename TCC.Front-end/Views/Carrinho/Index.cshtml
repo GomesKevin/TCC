@@ -5,7 +5,7 @@
 
 @{
 
-    if (Model == null)
+    if (Model == null || Model.Count <= 0)
     {
         <h2>Seu carrinho está vazio.</h2>
         <p>Para continuar comprando, navegue pelas categorias do site ou faça uma busca pelo seu produto.</p>
@@ -23,7 +23,7 @@
                                 <th scope="col" class="padding-10">Quantidade</th>
                                 <th scope="col" class="padding-10">Unidade</th>
                                 <th scope="col" class="padding-10">Total</th>
-                                <th scope="col" class="padding-10">Opções</th>
+                                <th scope="col" class="padding-10">Remover</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,7 +34,14 @@
                                     <td>@item.Quantidade</td>
                                     <td>@item.ValorProduto.ToString("C2")</td>
                                     <td>@item.ValorTotalProduto.ToString("C2")</td>
-                                    <td>Excluir</td>
+                                    <td class="text-align-center">
+                                        <button class="btn btn-link btn-remover" data-codigo="@item.CodigoProduto" onclick="removerItem('@item.CodigoProduto')" type="button">
+                                            <span class="material-symbols-outlined text-danger">
+                                                delete
+                                            </span>
+                                        </button>
+
+                                    </td>
                                 </tr>
                             }
                         </tbody>

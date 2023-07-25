@@ -26,37 +26,50 @@ namespace TCC.BackEnd.API.Comunicacao.Controllers
         [HttpPost("EnviarResumoPedido")]
         public async Task PostEnviarResumoPedido([FromBody] Pedido pedido)
         {
-            //var from = new EmailAddress("1410625@sga.pucminas.br", "Example User");
-            //var subject = "Sending with SendGrid is Fun";
-            //var to = new EmailAddress("kgomes975@gmail.com", "Example User");
-            //var plainTextContent = "and easy to do anywhere, even with C#";
-            //var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-            //var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            //var response = await client.SendEmailAsync(msg);
-
             var accessToken = HttpContext.GetTokenAsync("access_token");
 
             var client = new HttpClient();
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken.Result);
 
-            var url = this._configuration.GetValue<string>("tcc-api:cadastros");
+            var urlCadastros = this._configuration.GetValue<string>("tcc-api:cadastros");
 
-            var responsePessoa = await client.GetAsync(url + "/api/pessoas/" + pedido.CodigoPessoa);
+            var responsePessoa = await client.GetAsync(urlCadastros + "/api/pessoas/" + pedido.CodigoPessoa);
             var jsonPessoa = await responsePessoa.Content.ReadAsStringAsync();
             var pessoa = JsonConvert.DeserializeObject<Pessoa>(jsonPessoa);
 
-            var responseTokenIntegracao = await client.GetAsync(url + "/api/integracoes/SendGrid");
+            var responseTokenIntegracao = await client.GetAsync(urlCadastros + "/api/integracoes/SendGrid");
             var jsonTokenIntegracao = await responseTokenIntegracao.Content.ReadAsStringAsync();
             var tokenIntegracao = JsonConvert.DeserializeObject<TokenIntegracao>(jsonTokenIntegracao);
 
+            var urlNegocio = this._configuration.GetValue<string>("tcc-api:negocio");
+
+            var responsePedidoAtualizado = await client.GetAsync(urlNegocio + "/api/pedidos/" + pedido.Codigo);
+            var jsonPedidoAtualizado = await responsePedidoAtualizado.Content.ReadAsStringAsync();
+            var pedidoAtualizado = JsonConvert.DeserializeObject<Pedido>(jsonPedidoAtualizado);
+
+
+
             var clientSendGrid = new SendGridClient(tokenIntegracao.Token);
+
+            var htmlContent = "<div class=\"accordion-body\"> ";
+            htmlContent += " <span class=\"font-30\"><b>Data:</b> " + pedidoAtualizado.DataCriacao.ToShortDateString() + " - <b>Valor total:</b> " + pedidoAtualizado.ValorTotal + "</span>  ";
+            htmlContent += " <br/> ";
+            htmlContent += " <b>Itens:</b>  ";
+            foreach (var item in pedidoAtualizado.Itens)
+            {
+                htmlContent += " <br /> ";
+                htmlContent += " <span> " + item.QuantidadeItem + "x - " + item.NomeItem + "</span>";
+            }
+            htmlContent += "</div>";
+
+
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("1410625@sga.pucminas.br", "EasyMarket"),
-                Subject = pessoa.Nome,
-                PlainTextContent = "Resumo do pedido Nº: " + pedido.Codigo + ".",
-                HtmlContent = "<strong>" + "Resumo do pedido Nº: " + pedido.Codigo + ". </strong>"
+                Subject = "Pedido #" + pedidoAtualizado.Codigo + " confirmado!",
+                PlainTextContent = htmlContent,
+                HtmlContent = htmlContent
             };
             msg.AddTo(new EmailAddress(pessoa.Email, pessoa.Nome));
             var responseEmail = await clientSendGrid.SendEmailAsync(msg);

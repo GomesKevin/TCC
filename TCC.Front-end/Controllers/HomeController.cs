@@ -112,7 +112,7 @@ namespace TCC.Front_end.Controllers
         {
             var codigoUsuario = User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
 
-            HttpResponseMessage response = await ApiGetAsync("api/pedidos/" + codigoUsuario, "negocio");
+            HttpResponseMessage response = await ApiGetAsync("api/pedidos/pessoa/" + codigoUsuario, "negocio");
 
             response.EnsureSuccessStatusCode();
 
@@ -121,6 +121,28 @@ namespace TCC.Front_end.Controllers
             pedidos = pedidos.OrderByDescending(p => p.Codigo).ToList();
 
             return View(pedidos);
+        }
+
+        [HttpPost]
+        public IActionResult RemoverItem([FromBody] CarrinhoViewModel model)
+        {
+            // Obter o carrinho de compras da sessão
+            var carrinho = HttpContext.Session.GetObject<List<CarrinhoViewModel>>("carrinho");
+            if (carrinho == null)
+            {
+                // Se não houver um carrinho na sessão, criar um novo
+                carrinho = new List<CarrinhoViewModel>();
+            }
+
+            if (carrinho.FirstOrDefault(c => c.CodigoProduto == model.CodigoProduto) != null)
+                carrinho.RemoveAll(item => item.CodigoProduto == model.CodigoProduto);
+
+            // Salvar o carrinho de compras de volta na sessão
+            HttpContext.Session.SetObject("carrinho", carrinho);
+            ViewBag.QuantidadeItensCarrinho = carrinho.Sum(c => c.Quantidade);
+
+            // Retornar um resultado JSON indicando o sucesso da operação
+            return Json(new { success = true });
         }
     }
 }

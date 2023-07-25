@@ -54,12 +54,21 @@ namespace TCC.BackEnd.API.Negocio.Controllers
 
 
         [Authorize]
-        [HttpGet("{codigoPessoa}")]
+        [HttpGet("pessoa/{codigoPessoa}")]
         public ActionResult<IEnumerable<Pedido>> GetPedidos(int codigoPessoa)
         {
             var repo = new PedidoRepositorio();
 
             return repo.GetPedidos(codigoPessoa);
+        }
+
+        [Authorize]
+        [HttpGet("{codigoPedido}")]
+        public ActionResult<Pedido> GetPedido(int codigoPedido)
+        {
+            var repo = new PedidoRepositorio();
+
+            return repo.GetPedido(codigoPedido);
         }
     }
 }

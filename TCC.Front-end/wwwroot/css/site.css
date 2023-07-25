@@ -29,6 +29,7 @@ body {
     bottom: 0;
     width: 100%;
     height: 100px;
+    position: absolute;
 }
 
 .font-40{
@@ -37,4 +38,30 @@ body {
 
 .font-30 {
     font-size: 30px;
+}
+
+.mensagem-item-carrinho {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    width: 250px;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #00FF00; /* Cor verde para sucesso */
+}
+
+.alert-danger {
+    background-color: #dc3545; /* Cor vermelha para erro */
+}
+.text-align-center {
+    text-align: center;
 }
