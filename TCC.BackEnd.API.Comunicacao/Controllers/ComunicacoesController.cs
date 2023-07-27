@@ -53,7 +53,7 @@ namespace TCC.BackEnd.API.Comunicacao.Controllers
             var clientSendGrid = new SendGridClient(tokenIntegracao.Token);
 
             var htmlContent = "<div class=\"accordion-body\"> ";
-            htmlContent += " <span class=\"font-30\"><b>Data:</b> " + pedidoAtualizado.DataCriacao.ToShortDateString() + " - <b>Valor total:</b> " + pedidoAtualizado.ValorTotal + "</span>  ";
+            htmlContent += " <span class=\"font-30\"><b>Data:</b> " + pedidoAtualizado.DataCriacao.ToString("dd/MM/yyyy") + " - <b>Valor total:</b> " + pedidoAtualizado.ValorTotal.ToString("C2", new System.Globalization.CultureInfo("pt-BR")) + "</span>  ";
             htmlContent += " <br/> ";
             htmlContent += " <b>Itens:</b>  ";
             foreach (var item in pedidoAtualizado.Itens)

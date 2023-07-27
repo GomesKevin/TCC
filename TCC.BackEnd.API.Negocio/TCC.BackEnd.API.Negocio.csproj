@@ -17,4 +17,9 @@
     <ProjectReference Include="..\TCC.BackEnd.API.Core\TCC.BackEnd.API.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\ServiceDependencies\" />
+  </ItemGroup>
+
 </Project>

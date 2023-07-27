@@ -15,18 +15,21 @@ namespace TCC.BackEnd.API.Core.Repositorio
         public int SalvarPedido(Pedido pedido)
         {
             int codigoPedido;
+            DateTime dataCriacao = DateTime.Now; // Obtém a data e hora atual do sistema
+            dataCriacao = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dataCriacao, "E. South America Standard Time");
 
             using (var connection = base.GetConnection())
             {
                 connection.Open();
 
-                var query = "INSERT INTO TB_PEDIDO (MO_VALOR_TOTAL, CD_PESSOA) ";
-                query += "VALUES (@MO_VALOR_TOTAL, @CD_PESSOA); ";
+                var query = "INSERT INTO TB_PEDIDO (MO_VALOR_TOTAL, CD_PESSOA, DT_CRIACAO) ";
+                query += "VALUES (@MO_VALOR_TOTAL, @CD_PESSOA, @DT_CRIACAO); ";
                 query += "SELECT CAST(SCOPE_IDENTITY() AS INT)";
 
                 var parametros = new DynamicParameters();
                 parametros.Add("@MO_VALOR_TOTAL", pedido.ValorTotal);
                 parametros.Add("@CD_PESSOA", pedido.CodigoPessoa);
+                parametros.Add("@DT_CRIACAO", dataCriacao);
 
                 codigoPedido = connection.ExecuteScalar<int>(query, parametros);
 

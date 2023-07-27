@@ -14,7 +14,7 @@
     {
         <form method="post" action="/Carrinho/FinalizarPedido">
 
-            <div class="col-10">
+            <div class="col-10 conteudo-carrinho">
                 <div class="padding-top-50">
                     <table class="table table-responsive table-bordered table-hover">
                         <thead>
@@ -32,8 +32,8 @@
                                 <tr>
                                     <td>@item.DescricaoProduto</td>
                                     <td>@item.Quantidade</td>
-                                    <td>@item.ValorProduto.ToString("C2")</td>
-                                    <td>@item.ValorTotalProduto.ToString("C2")</td>
+                                    <td>@item.ValorProduto.ToString("C2", new System.Globalization.CultureInfo("pt-BR"))</td>
+                                    <td>@item.ValorTotalProduto.ToString("C2", new System.Globalization.CultureInfo("pt-BR"))</td>
                                     <td class="text-align-center">
                                         <button class="btn btn-link btn-remover" data-codigo="@item.CodigoProduto" onclick="removerItem('@item.CodigoProduto')" type="button">
                                             <span class="material-symbols-outlined text-danger">
@@ -46,7 +46,7 @@
                             }
                         </tbody>
                     </table>
-                    <h3>Total do pedido: @ViewBag.TotalPedido.ToString("C2")</h3>
+                    <h3>Total do pedido: @ViewBag.TotalPedido.ToString("C2", new System.Globalization.CultureInfo("pt-BR"))</h3>
 
                     <button class="btn btn-outline-dark" type="submit">Finalizar compra</button>
                 </div>
