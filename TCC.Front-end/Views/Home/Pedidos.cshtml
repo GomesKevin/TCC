@@ -1,0 +1,37 @@
+﻿@model List<PedidoViewModel>
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<div class="accordion margin-top-50 margin-bottom-100" id="accordionPedidos">
+    @{
+        if (Model != null)
+        {
+            @foreach (var pedido in Model)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pedido_@pedido.Codigo" aria-expanded="false" aria-controls="pedido_@pedido.Codigo">
+                            Pedido Nº @pedido.Codigo
+                        </button>
+                    </h2>
+                    <div id="pedido_@pedido.Codigo" class="accordion-collapse collapse" data-bs-parent="#accordionPedidos">
+                        <div class="accordion-body">
+                            <span class="material-symbols-outlined font-40">shopping_cart</span>
+                            <span class="font-30"><b>Data:</b> @pedido.DataCriacao.ToShortDateString() - <b>Valor total:</b> @pedido.ValorTotal</span>
+                            <br/>
+                            <b>Itens:</b>
+                            @foreach (var item in pedido.Itens)
+                            {
+                                <br />
+                                <span>@item.QuantidadeItem x - @item.NomeItem</span>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
